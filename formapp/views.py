@@ -1,8 +1,7 @@
-from django import template
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from .models import Question
-from django.template import context, loader
+
 # Create your views here.
 def index(request):
     
@@ -15,7 +14,19 @@ def index(request):
     return render(request,'formapp/index.html',context)
 
 def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+
+    try:
+        question=Question.objects.get(pk=question_id)
+        
+    except Question.DoesNotExist:
+        print('except')
+        raise Http404("question doesn't exist")
+
+    context={
+        'question':question
+    }
+
+    return render(request,'formapp/detail.html',context)
 
 def results(request, question_id):
     response = "You're looking at the results of question %s."
