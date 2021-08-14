@@ -7,12 +7,12 @@ from django.template import context, loader
 def index(request):
     
     questions=Question.objects.order_by('-pub_date')[:]
-    template=loader.get_template('formapp/index.html')
+    
     context={
         'questions':questions
     }
 
-    return HttpResponse(template.render(context,request))
+    return render(request,'formapp/index.html',context)
 
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
