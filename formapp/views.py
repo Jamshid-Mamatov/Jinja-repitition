@@ -1,9 +1,18 @@
+from django import template
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Question
+from django.template import context, loader
 # Create your views here.
 def index(request):
+    
+    questions=Question.objects.order_by('-pub_date')[:]
+    template=loader.get_template('formapp/index.html')
+    context={
+        'questions':questions
+    }
 
-    return HttpResponse("<h3>heyyo hello everybody</h3>")
+    return HttpResponse(template.render(context,request))
 
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
