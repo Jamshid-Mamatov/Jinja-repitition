@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,Http404
 from .models import Question
 
@@ -15,13 +15,8 @@ def index(request):
 
 def detail(request, question_id):
 
-    try:
-        question=Question.objects.get(pk=question_id)
+    question=get_object_or_404(Question,pk=question_id)
         
-    except Question.DoesNotExist:
-        print('except')
-        raise Http404("question doesn't exist")
-
     context={
         'question':question
     }
